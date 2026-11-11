@@ -13,36 +13,40 @@ const scale = 11;
 const path = (points, close = false) => points.map((p, i) => `${i ? 'L' : 'M'}${p.x ?? p[0]} ${p.y ?? p[1]}`).join(' ') + (close ? 'Z' : '');
 const shape = (points, fill, stroke, close = false, id = '') => `<path ${id ? `id="${id}"` : ''} d="${path(points, close)}" fill="${fill}" stroke="${stroke}" stroke-width="1" vector-effect="non-scaling-stroke"/>`;
 const p = head.profile, f = head.frame;
+// Midsagittal cut colouring: soft tissue, bone, brain, airway air and muscle are distinguishable.
+const skin = [...p.skinLower, ...p.skinUpper];
 export const headMarkup = `<g id="chimera-head" transform="matrix(${scale} 0 0 ${-scale} ${279 - lip.x * scale} ${204 + lip.y * scale})">
-  ${shape([...p.skinLower, ...p.skinUpper], 'url(#skin)', '#b7afa0', true)}
-  ${shape(p.skull, '#e5e2d7', '#c5c6b5', true)}
-  ${shape(p.brain, '#e0ded2', '#c2c4b4', true)}
-  ${shape(p.sulcus, 'none', '#c2c4b4')}
-  ${shape(p.eye, '#f2f1e7', '#afb5a4', true)}
-  ${shape(p.inset, 'none', '#d1c9ba')}
-  ${p.vertebrae.map(v => shape(v, '#eae6d9', '#babfae', true)).join('')}
-  ${shape(p.nasal, '#d4ded5', '#9eb8ab', true)}
-  ${p.turbinates.map(v => shape(v, 'none', '#a7b9aa', true)).join('')}
-  ${shape(p.palOral, 'none', '#aeb19e')}
-  ${shape(p.palNasal, 'none', '#bbc0ac')}
-  <path id="tract-air" fill="#77afa2" fill-opacity=".35" stroke="#468b84" stroke-width=".7" vector-effect="non-scaling-stroke"/>
+  <path d="${path(skin, true)}" fill="#000" opacity=".35" transform="translate(-.35 -.45)" filter="url(#soft)"/>
+  ${shape(skin, 'url(#skin)', '#8f604b', true)}
+  <path d="${path(skin, true)}" fill="none" stroke="#f6d8c6" stroke-width="1" opacity=".55" vector-effect="non-scaling-stroke" transform="translate(-.06 -.06)"/>
+  ${shape(p.skull, 'url(#bone)', '#c4ae86', true)}
+  ${shape(p.brain, 'url(#brain)', '#ae9095', true)}
+  ${shape(p.sulcus, 'none', '#a7878d')}
+  ${shape(p.eye, '#f6f2ea', '#b49b8a', true)}
+  ${shape(p.inset, 'none', '#c99f8b')}
+  ${p.vertebrae.map(v => shape(v, 'url(#bone)', '#b49d73', true)).join('')}
+  ${shape(p.nasal, '#2c3b37', '#7e958b', true)}
+  ${p.turbinates.map(v => shape(v, '#cf9a8c', '#a87163', true)).join('')}
+  ${shape(p.palOral, 'none', '#b38a74')}
+  ${shape(p.palNasal, 'none', '#b38a74')}
+  <path id="tract-air" fill="#24413b" fill-opacity=".9" stroke="#5aa294" stroke-width=".8" vector-effect="non-scaling-stroke"/>
   <g id="head-sections" stroke="#438b7f" stroke-width=".6" vector-effect="non-scaling-stroke">${Array.from({length:44}, () => '<path vector-effect="non-scaling-stroke"/>').join('')}</g>
   <path id="tract-outline" fill="none" stroke="#4b8a7e" stroke-width=".7" stroke-dasharray="2 3" vector-effect="non-scaling-stroke"/>
-  <path id="tongue-shape" fill="#cfa495" stroke="#af8475" stroke-width="1" vector-effect="non-scaling-stroke"/>
+  <path id="tongue-shape" fill="url(#muscle)" stroke="#8e4239" stroke-width="1" vector-effect="non-scaling-stroke"/>
   <path id="tongue-contact" fill="none" stroke="#a56d30" stroke-width="2" vector-effect="non-scaling-stroke"/>
-  ${shape(p.jawLower, 'none', '#a9aa96')}
-  ${shape(p.jawUpper, 'none', '#bbc0ac')}
-  ${shape(f.upperTeeth, '#fffef1', '#b9baa5', true)}
-  ${shape(p.lowerTeeth, '#fffef1', '#b9baa5', true)}
-  ${shape(f.velum, 'none', '#ac8776')}
-  ${shape(f.epiglottis, '#d9b6a1', '#b59881')}
-  ${shape(p.hyoid, '#efe9d4', '#b1b29d', true)}
-  ${shape(p.thyroid, 'none', '#adae96')}
-  ${p.trachea.map(v => shape(v, 'none', '#9eb8ab')).join('')}
-  ${p.rings.map(v => shape(v, 'none', '#aeb8a1')).join('')}
-  ${p.folds.map(v => shape(v, '#c6a28b', '#a38e73', true)).join('')}
-  ${shape(f.upperLip, '#bd8d7e', '#a37968')}
-  ${shape(f.lowerLip, '#bd8d7e', '#a37968')}
+  ${shape(p.jawLower, 'none', '#b49d73')}
+  ${shape(p.jawUpper, 'none', '#b49d73')}
+  ${shape(f.upperTeeth, '#fffdf3', '#b4a68a', true)}
+  ${shape(p.lowerTeeth, '#fffdf3', '#b4a68a', true)}
+  ${shape(f.velum, 'none', '#a45a50')}
+  ${shape(f.epiglottis, '#d68c80', '#a8655a')}
+  ${shape(p.hyoid, 'url(#bone)', '#b49d73', true)}
+  ${shape(p.thyroid, 'none', '#b49d73')}
+  ${p.trachea.map(v => shape(v, 'none', '#7e958b')).join('')}
+  ${p.rings.map(v => shape(v, 'none', '#c4ae86')).join('')}
+  ${p.folds.map(v => shape(v, '#c4776a', '#94544a', true)).join('')}
+  ${shape(f.upperLip, 'url(#lip)', '#8e4239')}
+  ${shape(f.lowerLip, 'url(#lip)', '#8e4239')}
 </g>`;
 
 export function drawHead(tongue, pressures = [], articulation = { fraction: 0.9, openness: 1 }) {

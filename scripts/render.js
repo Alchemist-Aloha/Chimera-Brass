@@ -1,9 +1,14 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { TrumpetModel } from '../src/dsp/trumpet.js';
+import { TromboneModel } from '../src/dsp/trombone.js';
+
+const instrument = process.argv[2] ?? 'trumpet';
+if (!['trumpet', 'trombone'].includes(instrument)) throw new Error('Choose trumpet or trombone');
 
 const rate = 48000;
 const seconds = 3;
-const model = new TrumpetModel(rate, { blowing: true });
+const Model = instrument === 'trombone' ? TromboneModel : TrumpetModel;
+const model = new Model(rate, { blowing: true });
 model.articulate();
 const samples = new Float32Array(rate * seconds);
 const start = performance.now();
@@ -17,5 +22,6 @@ buffer.writeUInt16LE(2, 32); buffer.writeUInt16LE(16, 34);
 buffer.write('data', 36); buffer.writeUInt32LE(samples.length * 2, 40);
 for (let i = 0; i < samples.length; i++) buffer.writeInt16LE(Math.round(Math.max(-1, Math.min(1, samples[i])) * 32767), 44 + i * 2);
 mkdirSync('out', { recursive: true });
-writeFileSync('out/trumpet.wav', buffer);
-console.log('Rendered out/trumpet.wav in', Math.round(performance.now() - start), 'ms; fault:', model.fault);
+const path = `out/${instrument}.wav`;
+writeFileSync(path, buffer);
+console.log('Rendered', path, 'in', Math.round(performance.now() - start), 'ms; fault:', model.fault);

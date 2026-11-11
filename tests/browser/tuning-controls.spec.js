@@ -129,7 +129,7 @@ test('tuning is reachable on touch screens and fits small, intermediate and wide
     for (const width of [320, 390, 768, 1024, 1440]) {
       await page.setViewportSize({ width, height: 844 });
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-      const editors = await page.locator('.value-field').evaluateAll(fields => fields.map(field => {
+      const editors = await page.locator('.value-field:visible').evaluateAll(fields => fields.map(field => {
         const r = field.getBoundingClientRect();
         const input = field.querySelector('input');
         return r.width >= 100 && r.left >= 0 && r.right <= innerWidth && input.getBoundingClientRect().width >= 40;

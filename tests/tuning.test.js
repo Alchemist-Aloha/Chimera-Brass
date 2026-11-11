@@ -14,8 +14,9 @@ test('tuning pull lengthens both U-slide legs without changing valve additions',
     const expected = BASE_LENGTH + tuning * 0.002 + extra;
     assert.ok(Math.abs(bore.length - expected) < 1e-12);
     assert.ok(Math.abs(boreProfile(valves, 96000, 343.4, tuning).length - expected) < 1e-12);
-    assert.ok(bore.segments.every(s => s.n > 0 && s.radii.every(r => r > 0)));
-    assert.ok(Math.abs(bore.segments.reduce((s, g) => s + g.n * g.dx, 0) - BASE_LENGTH - tuning * 0.002) < 343.4 / 96000);
+    assert.ok([bore.front, ...bore.segments].every(s => s.n > 0 && s.radii.every(r => r > 0)));
+    const permanent = [bore.front, ...bore.segments].reduce((s, g) => s + g.n * g.dx, 0);
+    assert.ok(Math.abs(permanent + bore.tube.length - BASE_LENGTH - tuning * 0.002) < 343.4 / 96000);
   }
 });
 
@@ -35,17 +36,21 @@ test('pulling the main slide lowers actual pitch at a fixed embouchure and can c
   assert.ok(Math.abs(1200 * Math.log2(pitches[1] / target)) < 5);
 });
 
-test('live tuning fades and rebuilds safely, preserves breath/settings, and works at travel limits', () => {
+test('live tuning moves a continuous tube: no restart, state preserved, travel limits reached', () => {
   for (const tuning of [-20, 40]) {
     const m = new TrumpetModel(48000, { blowing: true });
     m.process(new Float32Array(4800));
-    const before = m.bore;
-    m.setParameters({ tuning }); assert.equal(m.rebuilding, true);
-    const samples = new Float32Array(4800); m.process(samples);
-    assert.notEqual(m.bore, before); assert.equal(m.rebuilding, false);
+    const bore = m.bore, tract = m.tract, displacement = m.displacement;
+    m.setParameters({ tuning }); assert.equal(m.rebuilding, false);
+    assert.equal(m.displacement, displacement);
+    m.process(new Float32Array(48));
+    assert.ok(Math.abs(bore.tuning) > 0 && Math.abs(bore.tuning) < Math.abs(tuning), 'hand travel is finite');
+    const samples = new Float32Array(9600); m.process(samples);
+    assert.equal(m.bore, bore); assert.equal(m.tract, tract); assert.equal(m.rebuilding, false);
     assert.equal(m.params.blowing, true); assert.equal(m.params.tuning, tuning);
     assert.ok(Math.abs(m.length - BASE_LENGTH - tuning * 0.002) < 1e-12);
     assert.ok(samples.every(x => Number.isFinite(x) && Math.abs(x) <= 0.65));
+    assert.ok(Math.sqrt(samples.slice(-2048).reduce((s, x) => s + x * x, 0) / 2048) > 1e-3, 'sound continues through the move');
     assert.equal(m.fade, 1); assert.equal(m.fault, false);
   }
 });

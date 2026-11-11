@@ -63,16 +63,16 @@
     "lipMass": 8
   },
   {
-    "lipFrequency": 184.28847233094217,
-    "pressure": 4,
+    "lipFrequency": 174.513,
+    "pressure": 8,
     "opening": 0.1,
     "lipQ": 10,
     "lipMass": 8
   },
   {
-    "lipFrequency": 177.16111959287957,
-    "pressure": 12,
-    "opening": 0.15,
+    "lipFrequency": 185.411,
+    "pressure": 8,
+    "opening": 0.1,
     "lipQ": 10,
     "lipMass": 8
   },
@@ -98,14 +98,14 @@
     "lipMass": 4
   },
   {
-    "lipFrequency": 247.37827102499878,
-    "pressure": 4,
-    "opening": 0.1,
-    "lipQ": 7,
+    "lipFrequency": 248,
+    "pressure": 5.5,
+    "opening": 0.15,
+    "lipQ": 10,
     "lipMass": 4
   },
   {
-    "lipFrequency": 262.55854302057566,
+    "lipFrequency": 266.116,
     "pressure": 4,
     "opening": 0.1,
     "lipQ": 7,
@@ -134,7 +134,7 @@
   },
   {
     "lipFrequency": 357.07994188615237,
-    "attackLipFrequency": 392.78793607476765,
+    "attackLipFrequency": 392.78793607476763,
     "pressure": 8,
     "opening": 0.1,
     "lipQ": 10,
@@ -177,25 +177,25 @@
     "lipMass": 4
   },
   {
-    "lipFrequency": 617.8097112235313,
+    "lipFrequency": 548.226,
     "pressure": 5.5,
     "opening": 0.15,
     "lipQ": 10,
-    "lipMass": 4
+    "lipMass": 2
   },
   {
-    "lipFrequency": 656.6661014286088,
+    "lipFrequency": 566.154,
     "pressure": 5.5,
     "opening": 0.15,
     "lipQ": 10,
-    "lipMass": 4
+    "lipMass": 2
   },
   {
-    "lipFrequency": 710.8837231529023,
-    "pressure": 4,
-    "opening": 0.1,
-    "lipQ": 7,
-    "lipMass": 4
+    "lipFrequency": 637.497,
+    "pressure": 5.5,
+    "opening": 0.15,
+    "lipQ": 10,
+    "lipMass": 2
   },
   {
     "lipFrequency": 711.4646763659463,
@@ -205,8 +205,8 @@
     "lipMass": 2
   },
   {
-    "lipFrequency": 793.65,
-    "pressure": 4,
+    "lipFrequency": 785.842,
+    "pressure": 5.5,
     "opening": 0.15,
     "lipQ": 10,
     "lipMass": 2

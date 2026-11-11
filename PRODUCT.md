@@ -12,7 +12,7 @@ Students exploring a brass-instrument demonstration. No specific age group or le
 
 ## Product Purpose
 
-A demo project for playing physically generated brass sounds and exploring how adjustable parameters change them. Start with a trumpet, with other brass instruments a possible later extension.
+A demo project for playing physically generated brass sounds and exploring how adjustable parameters change them. Includes a trumpet and a straight tenor trombone, each with its own geometry and controls.
 
 Success means students can get a sound, adjust it, hear the difference, and understand which controls are responsible without tedious setup or repeated slider hunting. This is not a professional performance instrument, a medical model, or a validated digital twin.
 
@@ -23,7 +23,7 @@ Sound emerges from the coupling of breath pressure, a human vocal tract, vibrati
 ## Operating Context
 
 - Runs in a browser with AudioWorklet, on localhost or HTTPS. Audio begins through a user gesture.
-- Students can start airflow, explore physical parameters, press valves, audition notes, or play a MIDI melody.
+- Students can start airflow, explore physical parameters, press trumpet valves or move a trombone hand slide. Trumpet mode also offers note auditions and MIDI melodies.
 - Controls and the head/instrument illustration should help connect an adjustment to its audible result. Technical detail supports exploration; it should not be a prerequisite for making sound.
 - The user reports that the current tuning workflow is too tedious. Improving this workflow is the immediate UI priority, not adding more parameters.
 - Audio computation, MIDI imports, fonts, and bundled demonstration assets run locally. No microphone or backend is required.
@@ -34,7 +34,11 @@ Existing implementation:
 
 - A nominal B♭ trumpet coupled to a one-dimensional vocal-tract and pressure-driven lip model.
 - Adjustable breath pressure, lip resonance, aperture, damping, effective lip mass, tongue arch, tract length, temperature, and main tuning-slide position.
-- Three independent piston valves, Tu/Ku attacks, manual playback, and keyboard shortcuts.
+- Three independent trumpet piston valves, Tu/Ku attacks, manual playback, and keyboard shortcuts.
+- A straight nominal B♭ tenor trombone with a 12.7 mm bore, 204.4 mm bell, own mouthpiece and a continuous 0–650 mm hand slide; nominal position stops 1–7. Switching instrument stops playback safely.
+- Trombone has its own fitted 31-note keyboard (concert E2–B♭4) with slide placements near nominal positions; demos play an octave below the trumpet and say so.
+- Nonlinear wave steepening (brassy fortissimo) in both bores, switchable live; continuous main tuning slides.
+- Partial picker: the notes reachable on the current fingering/slide position, one click each.
 - Thirty-one playable written notes F♯3–C6, sounding E3–B♭5, using fitted physical embouchures.
 - Measured concert pitch and cents, pressure/flow readouts, waveform/spectrum, and bore/pressure views.
 - Monophonic MIDI import, note audition, and bundled Ode to Joy, William Tell, and long-tone demonstrations.

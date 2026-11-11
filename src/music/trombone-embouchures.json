@@ -1,0 +1,250 @@
+[
+  {
+    "lipFrequency": 58.882,
+    "pressure": 5.5,
+    "opening": 0.3,
+    "lipQ": 6,
+    "lipMass": 20,
+    "slide": 616.3
+  },
+  {
+    "lipFrequency": 62.384,
+    "pressure": 6,
+    "opening": 0.35,
+    "lipQ": 12,
+    "lipMass": 30,
+    "slide": 498.2
+  },
+  {
+    "lipFrequency": 64.932,
+    "pressure": 6,
+    "opening": 0.35,
+    "lipQ": 12,
+    "lipMass": 30,
+    "slide": 386.8
+  },
+  {
+    "lipFrequency": 67.592,
+    "pressure": 6,
+    "opening": 0.35,
+    "lipQ": 12,
+    "lipMass": 30,
+    "slide": 281.5
+  },
+  {
+    "lipFrequency": 70.487,
+    "pressure": 6,
+    "opening": 0.35,
+    "lipQ": 12,
+    "lipMass": 30,
+    "slide": 182.2
+  },
+  {
+    "lipFrequency": 73.663,
+    "pressure": 6,
+    "opening": 0.35,
+    "lipQ": 12,
+    "lipMass": 30,
+    "slide": 88.5
+  },
+  {
+    "lipFrequency": 77.443,
+    "pressure": 6,
+    "opening": 0.35,
+    "lipQ": 12,
+    "lipMass": 30,
+    "slide": 0
+  },
+  {
+    "lipFrequency": 77.221,
+    "pressure": 7,
+    "opening": 0.25,
+    "lipQ": 10,
+    "lipMass": 12,
+    "slide": 645
+  },
+  {
+    "lipFrequency": 82.272,
+    "pressure": 7,
+    "opening": 0.25,
+    "lipQ": 10,
+    "lipMass": 12,
+    "slide": 537
+  },
+  {
+    "lipFrequency": 101.917,
+    "pressure": 6,
+    "opening": 0.35,
+    "lipQ": 12,
+    "lipMass": 30,
+    "slide": 422.5
+  },
+  {
+    "lipFrequency": 106.169,
+    "pressure": 5.5,
+    "opening": 0.3,
+    "lipQ": 6,
+    "lipMass": 20,
+    "slide": 326.5
+  },
+  {
+    "lipFrequency": 121.305,
+    "pressure": 5.5,
+    "opening": 0.3,
+    "lipQ": 6,
+    "lipMass": 20,
+    "slide": 247.2
+  },
+  {
+    "lipFrequency": 124.639,
+    "pressure": 5.5,
+    "opening": 0.3,
+    "lipQ": 6,
+    "lipMass": 20,
+    "slide": 138.5
+  },
+  {
+    "lipFrequency": 137.056,
+    "pressure": 5.5,
+    "opening": 0.3,
+    "lipQ": 6,
+    "lipMass": 20,
+    "slide": 45
+  },
+  {
+    "lipFrequency": 152.682,
+    "pressure": 6,
+    "opening": 0.35,
+    "lipQ": 12,
+    "lipMass": 30,
+    "slide": 386.8
+  },
+  {
+    "lipFrequency": 154.994,
+    "pressure": 5.5,
+    "opening": 0.3,
+    "lipQ": 10,
+    "lipMass": 20,
+    "slide": 281.5
+  },
+  {
+    "lipFrequency": 161.313,
+    "pressure": 5.5,
+    "opening": 0.3,
+    "lipQ": 10,
+    "lipMass": 20,
+    "slide": 189
+  },
+  {
+    "lipFrequency": 177.556,
+    "pressure": 5.5,
+    "opening": 0.3,
+    "lipQ": 6,
+    "lipMass": 20,
+    "slide": 121.5
+  },
+  {
+    "lipFrequency": 185.779,
+    "pressure": 5.5,
+    "opening": 0.3,
+    "lipQ": 10,
+    "lipMass": 20,
+    "slide": 0
+  },
+  {
+    "lipFrequency": 217.716,
+    "pressure": 6,
+    "opening": 0.35,
+    "lipQ": 12,
+    "lipMass": 30,
+    "slide": 269.5
+  },
+  {
+    "lipFrequency": 179.885,
+    "pressure": 7,
+    "opening": 0.25,
+    "lipQ": 10,
+    "lipMass": 12,
+    "slide": 194.5
+  },
+  {
+    "lipFrequency": 247.329,
+    "pressure": 6,
+    "opening": 0.35,
+    "lipQ": 12,
+    "lipMass": 30,
+    "slide": 129.5
+  },
+  {
+    "lipFrequency": 264.887,
+    "pressure": 6,
+    "opening": 0.35,
+    "lipQ": 12,
+    "lipMass": 30,
+    "slide": 11.5
+  },
+  {
+    "lipFrequency": 272.073,
+    "pressure": 5.5,
+    "opening": 0.3,
+    "lipQ": 10,
+    "lipMass": 20,
+    "slide": 182.2
+  },
+  {
+    "lipFrequency": 314.958,
+    "pressure": 5.5,
+    "opening": 0.3,
+    "lipQ": 10,
+    "lipMass": 20,
+    "slide": 88.5
+  },
+  {
+    "lipFrequency": 296.083,
+    "pressure": 7,
+    "opening": 0.25,
+    "lipQ": 10,
+    "lipMass": 12,
+    "slide": 0
+  },
+  {
+    "lipFrequency": 338,
+    "pressure": 7,
+    "opening": 0.25,
+    "lipQ": 10,
+    "lipMass": 12,
+    "slide": 165
+  },
+  {
+    "lipFrequency": 367.138,
+    "pressure": 7,
+    "opening": 0.25,
+    "lipQ": 10,
+    "lipMass": 12,
+    "slide": 43
+  },
+  {
+    "lipFrequency": 385.69,
+    "pressure": 7,
+    "opening": 0.25,
+    "lipQ": 10,
+    "lipMass": 12,
+    "slide": 137.5
+  },
+  {
+    "lipFrequency": 392,
+    "pressure": 8,
+    "opening": 0.15,
+    "lipQ": 10,
+    "lipMass": 8,
+    "slide": 75
+  },
+  {
+    "lipFrequency": 407.859,
+    "pressure": 8,
+    "opening": 0.15,
+    "lipQ": 10,
+    "lipMass": 8,
+    "slide": 0
+  }
+]

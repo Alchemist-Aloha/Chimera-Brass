@@ -5,6 +5,7 @@ export class AudioEngine {
     this.onTelemetry = onTelemetry;
     this.onError = onError;
     this.volume = 0.55;
+    this.instrument = 'trumpet';
   }
   async start(parameters) {
     if (!this.context) {
@@ -25,6 +26,7 @@ export class AudioEngine {
           else this.onTelemetry(data);
         };
         this.node.onprocessorerror = () => this.onError('The audio processor stopped. Reload to reset it.');
+        this.selectInstrument(this.instrument);
       } catch (error) {
         await this.context.close();
         this.context = null;
@@ -33,6 +35,11 @@ export class AudioEngine {
     }
     await this.context.resume();
     this.update(parameters);
+  }
+  selectInstrument(instrument) {
+    if (instrument !== 'trumpet' && instrument !== 'trombone') throw new TypeError('Unknown instrument');
+    this.instrument = instrument;
+    this.node?.port.postMessage({ type: 'instrument', instrument });
   }
   update(parameters) { this.node?.port.postMessage(parameters); }
   articulate() { this.node?.port.postMessage({ type: 'articulate' }); }

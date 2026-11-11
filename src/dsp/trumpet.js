@@ -9,10 +9,10 @@ export { BASE_LENGTH, BELL, VALVE_LENGTHS, bellRadius, boreProfile } from './geo
 export const DEFAULTS = Object.freeze({
   pressure: 5.5, lipFrequency: 280, opening: 0.18, lipQ: 7,
   tongue: 0.45, tractLength: 0.17, temperature: 20, lipMass: 4,
-  valves: [false, false, false], blowing: false, tuning: 0, articulation: 'tu',
+  valves: [false, false, false], blowing: false, tuning: 0, articulation: 'tu', slide: 0, nonlinear: true,
 });
 export const LIMITS = Object.freeze({
-  tuning: [-20, 40], pressure: [0, 15], lipFrequency: [90, 900], opening: [0, 0.8],
+  slide: [0, 650], tuning: [-20, 40], pressure: [0, 15], lipFrequency: [40, 900], opening: [0, 0.8],
   lipQ: [1.5, 12], tongue: [0, 1], tractLength: [0.13, 0.21], temperature: [5, 35], lipMass: [1, 40],
 });
 export function validateParameters(patch) {
@@ -29,18 +29,18 @@ export function validateParameters(patch) {
     } else if (key === 'valves') {
       if (!Array.isArray(value) || value.length !== 3 || [...value].some(v => typeof v !== 'boolean')) throw new TypeError('Expected three boolean valves');
       clean.valves = [...value];
-    } else if (key === 'blowing') {
-      if (typeof value !== 'boolean') throw new TypeError('blowing must be boolean');
-      clean.blowing = value;
+    } else if (key === 'blowing' || key === 'nonlinear') {
+      if (typeof value !== 'boolean') throw new TypeError(key + ' must be boolean');
+      clean[key] = value;
     } else throw new TypeError('Unknown parameter: ' + key);
   }
   return clean;
 }
 
 // Exact positive root of Bernoulli flow coupled to both acoustic impedances.
-export function lipFlow(pressure, opening, impedance) {
+export function lipFlow(pressure, opening, impedance, width = 0.012) {
   if (opening <= 0 || pressure === 0) return 0;
-  const g = 0.012 * opening * Math.sqrt(2 / 1.204);
+  const g = width * opening * Math.sqrt(2 / 1.204);
   const z = impedance * g;
   return Math.sign(pressure) * g * 2 * Math.abs(pressure) /
     (Math.sqrt(z * z + 4 * Math.abs(pressure)) + z);
@@ -86,30 +86,42 @@ export class TrumpetModel {
     this.attackKind = this.params.articulation;
     this.tongueRelease = 1 / (this.rate * 0.003);
     this.dcX = 0; this.dcY = 0; this.fault = false;
-    this.fade = 1; this.rebuilding = false;
+    this.fade = 1; this.rebuilding = false; this.peakAdvance = 0;
     this.filter1 = new Lowpass(this.rate, 0.4 * sampleRate, 0.5411961);
     this.filter2 = new Lowpass(this.rate, 0.4 * sampleRate, 1.306563);
     this.buildGeometry();
   }
 
+  get bell() { return BELL; }
+  get lipWidth() { return 0.012; }
+  createBore() {
+    const bore = new PistonBore(this.rate, this.speed, this.params.valves, this.params.tuning);
+    bore.setNonlinear(this.params.nonlinear);
+    return bore;
+  }
+
   buildGeometry() {
     this.speed = 331.3 + 0.606 * this.params.temperature;
-    this.bore = new PistonBore(this.rate, this.speed, this.params.valves, this.params.tuning);
+    this.bore = this.createBore();
     this.length = this.bore.length;
     const count = Math.max(8, Math.round(this.params.tractLength * this.rate / this.speed));
     this.tract = new Waveguide(tractRadii(count, this.tongueMotion.x), this.rate, this.speed, 0.6);
     // shortcut: the aperture uses an unflanged duct fit; calibrate for a measured flared bell.
-    this.radiation = new BellRadiation(this.rate, this.speed, BELL.radius);
+    this.radiation = new BellRadiation(this.rate, this.speed, this.bell.radius);
     this.displacement = 0; this.velocity = 0;
   }
 
   setParameters(patch) {
     const clean = validateParameters(patch);
-    const rebuild = ['tractLength', 'temperature', 'tuning'].some(key =>
+    // Tuning and hand slides are continuous moving tubes; only wave speed or head length restart.
+    const rebuild = ['tractLength', 'temperature'].some(key =>
       key in clean && String(clean[key]) !== String(this.params[key]));
     Object.assign(this.params, clean);
     if (rebuild) this.rebuilding = true;
-    if ('valves' in clean) this.bore.setValves(clean.valves);
+    if ('valves' in clean) this.bore.setValves?.(clean.valves);
+    if ('slide' in clean) this.bore.setSlide?.(clean.slide);
+    if ('tuning' in clean) this.bore.setTuning(clean.tuning);
+    if ('nonlinear' in clean) this.bore.setNonlinear(clean.nonlinear);
   }
 
   articulate() {
@@ -153,7 +165,7 @@ export class TrumpetModel {
       if (this.tongueHold > 0) this.tongueHold--;
       else this.tongueGate = Math.min(1, this.tongueGate + this.tongueRelease);
       // shortcut: lumped tongue contact omits moving-wall flow; use measured contact/cavity mechanics for resolved transients.
-      const flow = lipFlow(available, opening * this.tongueGate, headZ + boreZ);
+      const flow = lipFlow(available, opening * this.tongueGate, headZ + boreZ, this.lipWidth);
       const delta = available - (headZ + boreZ) * flow;
       const w = 2 * Math.PI * this.frequency;
       const gamma = w / (2 * p.lipQ);
@@ -170,6 +182,7 @@ export class TrumpetModel {
       const reflected = this.radiation.step(bore.bellPressure);
       const radiated = bore.bellPressure + reflected;
       bore.step(downstream + boreZ * flow, reflected);
+      if (bore.advance > this.peakAdvance) this.peakAdvance = bore.advance;
       this.length = bore.length;
       // Tu's front contact is lumped at the embouchure; Ku also closes the rear tract.
       const closure = this.attackKind === 'ku' ? Math.round((tract.n - 1) * 0.58) : 0;
@@ -197,13 +210,16 @@ export class TrumpetModel {
   }
 
   telemetry() {
+    const steepening = this.peakAdvance / this.rate * 1e6;
+    this.peakAdvance = 0;
     return {
       pressure: this.mouthPressure, cupPressure: this.cupPressure,
       flow: this.flow, opening: this.lipOpening, length: this.length,
       fault: this.fault, tongue: this.tongueMotion.x,
       articulation: { kind: this.attackKind, openness: this.tongueGate, fraction: this.attackKind === 'ku' ? 0.58 : 0.9 },
       tract: Array.from(this.tract.forward, (v, i) => v + this.tract.backward[i]),
-      valves: [...this.bore.positions],
+      valves: [...(this.bore.positions ?? [0, 0, 0])], slide: this.bore.slide ?? 0, tuning: this.bore.tuning,
+      steepening, // µs: largest nonlinear crest advance since the previous report
       bore: this.bore.pressureSamples(),
     };
   }

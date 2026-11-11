@@ -42,7 +42,7 @@ test('main tuning slide changes the shared drawing and lowers actual concert pit
   await expect.poll(async () => {
     const label = await page.locator('#pitch').innerText();
     return label.includes('B♭4') && parseFloat(label) < before - 1;
-  }, { timeout: 1500 }).toBe(true);
+  }, { timeout: 4000 }).toBe(true); // the slide travels at hand speed; a loaded worklet reports late
   await expect(page.locator('#pitch')).toContainText('ct');
   await page.locator('#reset').click();
   await expect(page.locator('#tuning')).toHaveValue('0');

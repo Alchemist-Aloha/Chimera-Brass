@@ -16,7 +16,7 @@ test('all eight piston routes insert exactly their own slide lengths and delays'
     while (!bore.bellPressure && arrival < 1000) {
       bore.step(arrival === 0 ? 1 : 0, 0); arrival++;
     }
-    const sections = bore.segments.reduce((sum, guide) => sum + guide.n, 0) + bore.slides.reduce((sum, slide, i) => sum + (mask & (1 << i) ? slide.n : 0), 0);
+    const sections = bore.front.n + bore.tube.delay + bore.segments.reduce((sum, guide) => sum + guide.n, 0) + bore.slides.reduce((sum, slide, i) => sum + (mask & (1 << i) ? slide.n : 0), 0);
     assert.ok(Math.abs(arrival - sections) <= 7, `${mask}: ${arrival} vs ${sections}`);
     assert.ok(arrival < 1000);
   }

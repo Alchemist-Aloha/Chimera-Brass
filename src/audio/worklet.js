@@ -7,13 +7,17 @@ class BrassProcessor extends AudioWorkletProcessor {
     this.blocks = 0;
     this.port.onmessage = ({ data }) => {
       try {
-        if (data?.type === 'score') {
+        if (data?.type === 'instrument') {
+          this.player.setInstrument(data.instrument);
+          this.port.postMessage(this.player.telemetry());
+        }
+        else if (data?.type === 'score') {
           this.player.start(data.notes, data.id);
           this.port.postMessage(this.player.telemetry());
         }
         else if (data?.type === 'articulate') this.player.model.articulate();
         else {
-          const live = Object.keys(data).every(key => key === 'tuning' || key === 'articulation');
+          const live = Object.keys(data).every(key => key === 'tuning' || key === 'articulation' || key === 'nonlinear');
           if (this.player.active && !live) this.player.stop();
           const wasBlowing = this.player.model.params.blowing;
           this.player.model.setParameters(data);

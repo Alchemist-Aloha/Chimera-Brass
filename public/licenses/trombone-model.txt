@@ -1,0 +1,16 @@
+ChimeraBrass tenor trombone model and schematic
+
+Published dimensional reference:
+Yamaha YSL-354 specifications: Bb, 12.7 mm / 0.500 inch bore, 204.4 mm / 8 inch bell.
+https://ca.yamaha.com/en/musical-instruments/brass-woodwinds/products/trombones/ysl-354/specs.html
+
+These dimensions inform a generic straight-tenor prototype, not a reverse-engineered or validated Yamaha instrument. The 2.976 m path, internal cup/backbore/leadpipe taper, 650 mm flare (chosen so computed resonances follow a B♭ partial series), loss, effective lip width/mass and travel speed are modelling assumptions. No Yamaha trombone photograph, engraving or software is redistributed. No manufacturer affiliation or endorsement is implied.
+
+Hand travel adds twice its distance to the air path. Nominal position lengths are references; actual sound emerges from pressure, the Chimera-derived head, a self-oscillating lip valve and the bidirectional bore. The fractional-delay hand slide preserves waves but does not solve full moving-wall fluid mechanics. The model has no F attachment. Trumpet MIDI presets are not used for trombone.
+
+New simulation and rendering code: MIT, under the project LICENSE.
+The original trombone schematic reuses the trumpet diagram's brass material styling and is offered under Creative Commons Attribution-ShareAlike 4.0:
+https://creativecommons.org/licenses/by-sa/4.0/
+Original schematic contributions: ChimeraBrass contributors, 2026.
+Retain the Yamaha trumpet reference/material attribution in yamaha-reference.txt when reusing the combined artwork; no Yamaha trombone reference image was used.
+The shared head/profile and muscle dynamics retain the Chimera MIT notice (chimera-MIT.txt). The shared pressure-wave topology retains the Pink Trombone MIT notice (pink-trombone-MIT.txt).
