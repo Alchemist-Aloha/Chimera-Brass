@@ -1,0 +1,46 @@
+Bundled melody scores — sources and adaptations
+Retrieved 2026-11-10. No endorsement by the source editors is implied.
+
+ODE TO JOY — Ludwig van Beethoven (1770–1827)
+Mutopia Project, Peter Chubb, Mutopia-2009/08/05-528.
+The typesetter explicitly placed this edition in the public domain.
+Edition: https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=528
+Score: https://www.mutopiaproject.org/ftp/BeethovenLv/ode/ode-a4.pdf
+MIDI: https://www.mutopiaproject.org/ftp/BeethovenLv/ode/ode.mid
+LilyPond: https://www.mutopiaproject.org/ftp/BeethovenLv/ode/ode.ly
+Original MIDI and LilyPond retained in third_party/scores/ode-mutopia.*.
+SHA-256 MIDI: fb1604c08c865b275b464d74e5a7c526ff1a8acccdf9853cb92f0778daaed14b
+SHA-256 LilyPond: a0c865aa9f71221605362622d281405071e0734540e86ce131131757cc803a71
+
+Adaptation: the first eight bars of the soprano melody are extracted from the
+upper staff of the SATB MIDI; accompaniment and the remaining eight bars are
+omitted. Original G-major pitches and dotted-quarter/eighth-note cadences are
+retained. This is G4–D5 concert, five semitones below our previous C5–G5 demo.
+Tempo is reduced from 100 to 80 quarter notes/minute for the physical model.
+
+WILLIAM TELL OVERTURE — Gioachino Rossini (1792–1868), 1829
+The underlying composition is public domain. This is a new, monophonic MIDI
+transcription of the opening gallop theme only, not the full overture or its
+orchestration. No modern engraved page, accompaniment or recording is bundled.
+Melody/rhythm cross-check: ABC transcription, credited there as
+"Rossini arr Hugh Barwell, via PR", mirrored by John Chambers:
+https://abcnotation.com/tunePage?a=trillian.mit.edu/~jc/music/abc/Contra/march/William_Tell_Overture-C--/0000
+Alternative mirror of the same notation:
+https://abcnotation.com/tunePage?a=trillian.mit.edu/~jc/music/abc/mirror/LesterBailey/melnets_big_abc_file/15528
+Historical full-score catalogue (Breitkopf & Härtel, 1899, public domain):
+https://imslp.org/wiki/Guillaume_Tell_(Rossini,_Gioacchino)
+The historical PDF could not be retrieved automatically (IMSLP bot check).
+8notes prohibits digital redistribution of its edition, so it is NOT bundled.
+
+Adaptation: first theme only (39 notes), no repeats; two eighth-note pickups,
+quarter/eighth gallop rhythm and the tied 2.5-beat high note retained. Transposed
+from the ABC reference's C major to D major (A4–A5 concert), rather than the
+orchestral E major, to stay within the model's supported range. Slow practice
+tempo: 71 quarter notes/minute, not the orchestral Presto.
+
+CHROMATIC LONG-TONE STUDY
+Original project exercise, 31 concert notes E3–B-flat5 at 15 BPM.
+
+All bundled MIDIs are generated offline by scripts/make-scores.js. Their notes
+control the physical pressure/lip/valve model; they contain no sampled audio.
+These are melody excerpts/exercises, not complete orchestral scores.

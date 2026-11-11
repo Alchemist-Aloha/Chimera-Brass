@@ -1,0 +1,15 @@
+Yamaha Trumpet YTR-8335LA photograph and adapted trumpet artwork
+
+Photograph: Yamaha Corporation. JPEG conversion/crop by Jonathanischoice.
+Source: https://commons.wikimedia.org/wiki/File:Yamaha_Trumpet_YTR-8335LA_crop.jpg
+Original image: https://upload.wikimedia.org/wikipedia/commons/1/12/Yamaha_Trumpet_YTR-8335LA_crop.jpg
+License: Creative Commons Attribution-ShareAlike 4.0 International
+https://creativecommons.org/licenses/by-sa/4.0/
+The local reference JPEG is unmodified.
+
+The trumpet portion of the SVG illustration in src/ui/illustration.js is a
+simplified vector adaptation of this reference, with reconstructed cutaway
+airways, animated pistons and nonuniform schematic scaling. This adapted
+trumpet artwork is also provided under CC BY-SA 4.0.
+The DSP, UI logic and other original project code remain under the MIT license.
+No endorsement by Yamaha Corporation is implied.
