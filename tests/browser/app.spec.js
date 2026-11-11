@@ -4,6 +4,8 @@ test('real AudioWorklet starts silent, self-oscillates, plots and stops', async 
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
   await page.goto('/');
+  await expect(page).toHaveTitle('ChimeraBrass — A physical sound laboratory');
+  await expect(page.getByRole('link', { name: 'ChimeraBrass home' })).toHaveText('ChimeraBrass');
   await expect(page.getByRole('heading', { name: 'Trumpet laboratory' })).toBeVisible();
   await expect(page.locator('#live-status')).toContainText('At rest');
   await expect(page.locator('#pitch')).toContainText('—');
@@ -92,9 +94,9 @@ test('all eight valve combinations keep one connected mouth-to-bell cutaway rout
   await page.screenshot({ path: 'test-results/desktop-valves.png', fullPage: true });
 });
 
-test('model notes explain limitations and are keyboard dismissible', async ({ page }) => {
+test('credits acknowledge reused code and retain licenses, with keyboard dismissal', async ({ page }) => {
   await page.goto('/');
-  await page.getByRole('button', { name: 'Behind the model' }).click();
+  await page.getByRole('button', { name: 'Credits & licenses' }).click();
   await expect(page.getByRole('dialog')).toBeVisible();
   await expect(page.getByRole('dialog')).toContainText('not a validated digital twin');
   await expect(page.getByRole('dialog')).toContainText('Chimera Vocal Synth');
@@ -103,6 +105,14 @@ test('model notes explain limitations and are keyboard dismissible', async ({ pa
   const license = await page.request.get('/licenses/chimera-MIT.txt');
   expect(license.ok()).toBe(true);
   expect(await license.text()).toContain('Jameson Hodge');
+  await expect(page.getByRole('dialog')).toContainText('Neil Thapen');
+  await expect(page.getByRole('dialog')).toContainText('@tonejs/midi');
+  await expect(page.getByRole('dialog')).toContainText('independent adaptation');
+  for (const name of ['chimerabrass-MIT', 'pink-trombone-MIT', 'tonejs-midi-MIT', 'midi-file-MIT', 'array-flatten-MIT', 'dm-sans-OFL', 'instrument-serif-OFL', 'yamaha-reference', 'score-sources']) {
+    const notice = await page.request.get(`/licenses/${name}.txt`);
+    expect(notice.ok(), name).toBe(true);
+    expect((await notice.text()).length, name).toBeGreaterThan(100);
+  }
   await page.keyboard.press('Escape');
   await expect(page.getByRole('dialog')).not.toBeVisible();
 });

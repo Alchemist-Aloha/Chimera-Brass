@@ -1,4 +1,4 @@
-# Brasswind
+# ChimeraBrass
 
 <!-- impeccable:product-schema 1 -->
 
@@ -48,7 +48,7 @@ Open decisions: students' age and experience, any classroom-specific deployment 
 
 ## Brand Commitments
 
-The existing project name is Brasswind. The user requested real instrument/head physics, reuse of Chimera's useful head components and graphic, and a trumpet-first implementation. The user has explicitly requested a dark theme and a reorganized layout. Keep the brass instrument and teal signal colors, use dark neutral surfaces, and prioritize direct controls with nearby playback and measured feedback. This is a visual/workflow change, not a change to the acoustic model.
+The project name is ChimeraBrass (renamed from Brasswind). Acknowledge Chimera Vocal Synth and the other reused code and assets without implying upstream affiliation or endorsement. The user requested real instrument/head physics, reuse of Chimera's useful head components and graphic, and a trumpet-first implementation. The user has explicitly requested a dark theme and a reorganized layout. Keep the brass instrument and teal signal colors, use dark neutral surfaces, and prioritize direct controls with nearby playback and measured feedback. This is a visual/workflow change, not a change to the acoustic model.
 
 ## Evidence on Hand
 
