@@ -8,9 +8,11 @@ test('tenor trombone makes live sound and a continuous slide lowers the sounding
   await expect(page.locator('#trombone-assembly')).toBeVisible();
   await expect(page.locator('#trumpet-assembly')).toBeHidden();
   await expect(page.locator('#valve-controls')).toBeHidden();
+  await page.locator('[data-page="music"]').click();
   await expect(page.locator('#music')).toBeVisible();
   await expect(page.locator('#music-range')).toContainText('E2–B♭4');
   await expect(page.locator('[data-note="40"]')).toContainText('pos 7');
+  await page.locator('[data-page="lab"]').click();
   await expect(page.locator('#bore-length')).toContainText('2.976');
   await page.locator('#setup-play').click();
   await expect.poll(async () => {
@@ -72,7 +74,7 @@ test('slide positions, direct-entry validation and instrument-aware presets fit 
 
 test('switching instruments cancels trumpet playback and restores trumpet MIDI without stale notes', async ({ page }) => {
   const errors = []; page.on('pageerror', error => errors.push(error.message));
-  await page.goto('/'); await page.locator('#score-play').click();
+  await page.goto('/#music'); await page.locator('#score-play').click();
   await expect(page.locator('#play')).toHaveAttribute('aria-pressed', 'true');
   await page.locator('#instrument').selectOption('trombone');
   await expect(page.locator('#play')).toHaveAttribute('aria-pressed', 'false');
@@ -104,6 +106,7 @@ test('trombone notes, partial picker and demos use calibrated slide placements',
   await expect(page.locator('#pitch')).toContainText('D3', { timeout: 4000 });
   await expect(page.locator('#tuner-note')).toHaveText('D3');
   await page.locator('#setup-play').click();
+  await page.locator('[data-page="music"]').click();
   await expect(page.locator('#score-description')).not.toBeEmpty();
   await expect(page.locator('#music-message')).toContainText('one octave below');
   await page.locator('[data-note="58"]').click();

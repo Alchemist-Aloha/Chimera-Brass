@@ -54,19 +54,21 @@ const app = document.querySelector('#app');
 app.innerHTML = `
 <header class="topbar">
   <a class="brand" href="./" aria-label="ChimeraBrass home"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 12h13l11-6v20l-11-6H4z" fill="currentColor"/><path d="M10 20v7h10v-7" fill="none" stroke="currentColor" stroke-width="2"/></svg>Chimera<span class="brand-dot">Brass</span></a>
-  <span class="topbar-caption">A PHYSICAL SOUND LABORATORY</span>
+  <h1>Trumpet laboratory</h1>
+  <nav class="page-tabs" aria-label="Pages"><a href="#lab" data-page="lab">Laboratory</a><a href="#music" data-page="music">Play a melody</a></nav>
   <button class="text-button" id="model-notes">Behind the model <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg></button>
 </header>
 <main>
-  <div class="page-heading"><div><h1>Trumpet laboratory</h1><p>A human airway. A pair of lips. A column of air brought to life.</p></div><div class="instrument-picker"><label for="instrument">Instrument</label><select id="instrument"><option value="trumpet">B♭ Trumpet</option><option value="trombone">B♭ Tenor trombone</option></select></div></div>
   <div class="workspace">
     <div class="setup-listen" role="group" aria-label="Playback and starting point">
+      <div class="instrument-picker"><label for="instrument">Instrument</label><select id="instrument"><option value="trumpet">B♭ Trumpet</option><option value="trombone">B♭ Tenor trombone</option></select></div>
       <div class="preset-control"><label for="preset">Starting point</label><select id="preset"><option value="balanced">Balanced embouchure</option><option value="gentle">Gentle attack</option><option value="bright">Bright & open</option><option value="upper">Upper register</option><option value="custom" disabled>Custom setup</option></select></div>
       <button type="button" class="setup-play" id="setup-play" aria-pressed="false"><svg id="setup-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2l10 6-10 6z"/></svg><span id="setup-play-label">Play setup</span></button>
       <div class="setup-feedback tuner" id="tuner"><span>Measured concert pitch</span><div class="tuner-body"><strong class="tuner-note" id="tuner-note" aria-hidden="true">—</strong><div class="tuner-scale"><div class="tuner-meter" aria-hidden="true"><i class="tuner-tick"></i><i class="tuner-needle" id="tuner-needle"></i></div><output id="setup-pitch" aria-live="off">— Hz</output></div></div></div>
       <button class="text-button reset" id="reset">Reset <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10a8 8 0 1 1 1 8M4 4v6h6"/></svg></button>
       <p id="setup-error" class="setup-error" hidden></p>
     </div>
+    <div class="page lab-page" id="lab">
     <section class="laboratory" aria-label="Trumpet simulation">
       <div class="stage-top"><div class="instrument-heading"><div><h2 id="instrument-title">B♭ Trumpet</h2><span id="instrument-description">CYLINDRICAL BORE · THREE PISTON VALVES</span></div></div><span class="live-status" id="live-status">At rest</span></div>
       <div class="stage">${illustration}</div>
@@ -91,9 +93,9 @@ app.innerHTML = `
         <div class="control articulation-control"><div class="control-heading"><label for="articulation">Tongue attack</label><button id="tongue-note" type="button" class="text-button">Tongue note · T / K</button></div><select id="articulation" aria-describedby="articulation-help"><option value="tu">Tu · front tongue / crisp</option><option value="ku">Ku · back tongue / softer</option></select><p id="articulation-help">T plays “tu”; K plays “ku”. Tongue the live note, or start airflow at rest. MIDI uses the selected attack, not a spoken sample.</p></div>
       </section>
       <section class="control-section instrument-controls"><div class="section-label"><h3 id="resonator-title">The trumpet</h3><span class="section-note">Resonator</span></div><div class="instrument-parameters"><div class="valve-controls" id="valve-controls"><div class="valve-heading"><span>Piston valves</span><span>CLICK OR HOLD KEYS 1–3</span></div><div class="valve-buttons">${[1, 2, 3].map((n, i) => `<button class="valve-button" data-valve="${i}" aria-label="Valve ${n}" aria-pressed="false"><span>${n}</span><small>+${Math.round(VALVE_LENGTHS[i] * 100)} cm</small></button>`).join('')}</div><div class="tubing-readout"><span>Additional tubing</span><strong id="extra-length">+0.0 cm</strong></div><p class="valve-help">Retune the lips as you change valves; fixed embouchure can jump registers or fall silent.</p></div><div id="hand-slide-controls" hidden>${slider('slide', 'Hand slide extension', 0, 650, 0.5, 'Continuous travel: 1 mm of hand movement adds 2 mm of tubing. Drag while blowing for a real waveguide glissando.')}<div class="slide-positions" role="group" aria-label="Nominal trombone slide positions">${SLIDE_POSITIONS.map((mm, i) => `<button type="button" data-slide-position="${i}" aria-label="Slide position ${i + 1}" aria-pressed="${i === 0}">${i + 1}</button>`).join('')}</div><p class="slide-help">Positions 1–7 (keys 1–7) are nominal semitone stops, not forced notes. Adjust lip resonance to find different partials. Actual hand travel: <output id="slide-actual">0.0 mm</output>.</p></div><div class="partials" id="partials"><div class="partials-heading"><span id="partials-title">Notes on this fingering</span><span class="section-note">Lips only</span></div><div class="partial-buttons" id="partial-buttons" role="group" aria-labelledby="partials-title"></div><p class="partials-help">Same tube, different lip tension: each button applies a fitted embouchure for one partial.</p></div>${slider('tuning', 'Main tuning slide', -20, 40, 0.5, 'Pull + to lower pitch; push − to raise it. Millimetres relative to nominal; both U-slide legs change length. Tune against A4 = 440 Hz and the measured cents readout.')}<label class="switch" for="nonlinear"><input type="checkbox" id="nonlinear" role="switch" checked aria-describedby="nonlinear-help"/><span class="switch-track" aria-hidden="true"></span><span><strong>Nonlinear steepening</strong><small id="nonlinear-help">Loud crests travel faster than troughs, sharpening into brassy shock fronts. Turn off at high breath pressure to hear the difference.</small></span></label></div></section>
-      <details class="advanced"><summary>Player anatomy & physics <svg class="disclosure-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><div class="advanced-controls">${slider('tractLength', 'Vocal tract length', 0.13, 0.21, 0.005, 'Scales the reused adult vocal tract; not an individual scan.')}${slider('lipQ', 'Lip quality factor', 1.5, 12, 0.1, 'Higher values mean less tissue damping.')}${slider('lipMass', 'Lip areal mass', 1, 40, 0.1, 'Effective vibrating mass per lip area, in kg/m².')}${slider('temperature', 'Air temperature', 5, 35, 1, 'Changes wave speed and therefore the bore resonances.')}</div></details>
-      <div class="physics-note"><p><strong>One coupled system.</strong><br/>Pressure moves the lips. The lips move air. Reflections from the head and horn move the lips again.</p></div>
+      <details class="advanced"><summary>Player anatomy & physics <svg class="disclosure-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><div class="advanced-controls">${slider('tractLength', 'Vocal tract length', 0.13, 0.21, 0.005, 'Scales the reused adult vocal tract; not an individual scan.')}${slider('lipQ', 'Lip quality factor', 1.5, 12, 0.1, 'Higher values mean less tissue damping.')}${slider('lipMass', 'Lip areal mass', 1, 40, 0.1, 'Effective vibrating mass per lip area, in kg/m².')}${slider('temperature', 'Air temperature', 5, 35, 1, 'Changes wave speed and therefore the bore resonances.')}</div><div class="physics-note"><p><strong>One coupled system.</strong><br/>Pressure moves the lips. The lips move air. Reflections from the head and horn move the lips again.</p></div></details>
     </aside>
+    </div>
     ${musicMarkup}
   </div>
   <footer><span>MADE OF AIR, NOT SAMPLES.</span><span>Head & airway adapted from <a href="https://github.com/jamesondh/chimera-vocal-synth" target="_blank" rel="noreferrer">Chimera Vocal Synth ↗</a> <span class="footer-divider">/</span> <button class="text-button" id="limitations">Credits & licenses</button></span></footer>
@@ -547,5 +549,16 @@ function animate() {
   }
   requestAnimationFrame(animate);
 }
+// Subpages are hash routes so links, back/forward and reloads keep the page.
+const stage = document.querySelector('.stage'), stageHome = stage.nextElementSibling;
+const route = () => {
+  const page = location.hash === '#music' ? 'music' : 'lab';
+  $('lab').hidden = page !== 'lab'; $('music').hidden = page !== 'music';
+  // One live illustration, moved to whichever page is showing.
+  if (page === 'music') $('melody-stage').append(stage); else stageHome.before(stage);
+  document.querySelectorAll('[data-page]').forEach(a => a.dataset.page === page ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
+};
+addEventListener('hashchange', route);
+route();
 updateControls();
 animate();

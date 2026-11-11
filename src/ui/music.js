@@ -31,8 +31,9 @@ const demos = {
 };
 
 export const musicMarkup = `
-<section class="music-panel" id="music" aria-labelledby="music-title">
+<section class="page music-panel" id="music" aria-labelledby="music-title">
   <div class="music-heading"><h2 id="music-title">Play a melody</h2><span class="music-range" id="music-range">${RANGE.trumpet}</span></div>
+  <div class="melody-layout"><div class="melody-stage" id="melody-stage"></div><div class="melody-main">
   <p class="music-help" id="music-intro">${HELP.trumpet}</p>
   <div class="note-keyboard" id="note-keyboard" aria-label="Playable trumpet notes">${keyboardMarkup('trumpet')}</div>
   <div class="score-tools"><label class="sr-only" for="music-piece">Demo MIDI score</label><select id="music-piece">${Object.entries(demos).map(([id, demo]) => `<option value="${id}">${demo.title}</option>`).join('')}</select><button id="score-play" class="score-play" disabled><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2l10 6-10 6z"/></svg>Play score</button><button id="score-stop"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 3h10v10H3z"/></svg>Stop</button><label class="file-upload" for="midi-file">Open MIDI<input id="midi-file" type="file" accept=".mid,.midi,audio/midi" class="sr-only"/></label></div>
@@ -43,6 +44,7 @@ export const musicMarkup = `
   <p id="score-description" class="music-help"></p>
   <a id="midi-download" class="score-download" href="./scores/ode-to-joy.mid" download>Download this MIDI score</a>
   <p class="music-help"><a id="score-source" class="score-download" target="_blank" rel="noreferrer" hidden></a></p>
+  </div></div>
 </section>`;
 
 export function setupMusic(play, stop) {

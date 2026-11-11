@@ -1,25 +1,26 @@
 import { test, expect } from '@playwright/test';
 
-test('playback spans the workbench and melody uses the full width below both panels', async ({ page }) => {
-  await page.setViewportSize({ width: 1440, height: 1000 });
+test('lab and melody are subpages under a shared setup bar; the lab fits one desktop screen', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/');
-  const bounds = await page.evaluate(() => {
-    const box = selector => {
-      const { x, y, width, bottom } = document.querySelector(selector).getBoundingClientRect();
-      return { x, y, width, bottom };
-    };
-    return { lab: box('.laboratory'), controls: box('#setup'), music: box('#music'), bar: box('.setup-listen'), nested: !!document.querySelector('#setup .setup-listen') };
-  });
-  expect(bounds.nested).toBe(false);
-  expect(bounds.controls.x).toBeGreaterThan(bounds.lab.x);
-  expect(bounds.music.x).toBe(bounds.lab.x);
-  expect(Math.abs(bounds.music.width - bounds.lab.width - bounds.controls.width)).toBeLessThan(2);
-  expect(bounds.music.y).toBeGreaterThanOrEqual(Math.max(bounds.lab.bottom, bounds.controls.bottom) - 1);
-  expect(bounds.bar.width).toBe(bounds.music.width);
-  await page.getByRole('link', { name: 'Play a melody', exact: true }).click();
+  const box = selector => page.locator(selector).evaluate(el => { const { x, width, bottom } = el.getBoundingClientRect(); return { x, width, bottom }; });
+  expect(await page.evaluate(() => document.documentElement.scrollHeight <= innerHeight)).toBe(true);
+  for (const panel of ['.laboratory', '#setup']) expect(await page.locator(panel).evaluate(el => el.scrollHeight <= el.clientHeight)).toBe(true);
+  const [lab, controls, bar] = [await box('.laboratory'), await box('#setup'), await box('.setup-listen')];
+  expect(controls.x).toBeGreaterThan(lab.x);
+  expect(Math.abs(bar.width - lab.width - controls.width)).toBeLessThan(2);
+  await expect(page.locator('#music')).toBeHidden();
+  await expect(page.locator('[data-page="lab"]')).toHaveAttribute('aria-current', 'page');
+  await page.getByRole('link', { name: 'Play a melody', exact: true }).first().click();
+  await expect(page).toHaveURL(/#music$/);
+  await expect(page.locator('#lab')).toBeHidden();
+  await expect(page.locator('[data-page="music"]')).toHaveAttribute('aria-current', 'page');
+  await expect(page.locator('#melody-stage .instrument-scene')).toBeVisible();
   await expect(page.locator('#setup-play')).toBeInViewport();
   await expect(page.locator('.music-heading')).toBeInViewport();
   await expect(page.locator('#score-play')).toBeEnabled();
+  await page.goBack();
+  await expect(page.locator('#lab .instrument-scene')).toBeVisible();
 });
 
 test('dark native fields, feedback, dialog and validation maintain readable contrast', async ({ page }) => {

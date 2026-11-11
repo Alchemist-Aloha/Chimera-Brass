@@ -29,8 +29,10 @@ test('main tuning slide changes the shared drawing and lowers actual concert pit
   await page.goto('/');
   const path = await page.locator('[data-main-tube]').first().getAttribute('d');
   const routeLength = await page.locator('#trumpet-air-path').evaluate(p => p.getTotalLength());
+  await page.locator('[data-page="music"]').click();
   await page.locator('[data-note="70"]').click();
   await expect(page.locator('#pitch')).toContainText('B♭4', { timeout: 1500 });
+  await page.locator('[data-page="lab"]').click();
   const before = parseFloat(await page.locator('#pitch').innerText());
   await page.locator('#tuning').fill('10');
   await expect(page.locator('#tuning-number')).toHaveValue('10');
@@ -55,8 +57,10 @@ test('tuning and tongue style stay live through MIDI note changes and settling',
   await page.goto('/');
   await page.locator('#articulation').selectOption('ku');
   await page.locator('#tuning').fill('5');
+  await page.locator('[data-page="music"]').click();
   await page.locator('#score-play').click();
   await expect(page.locator('#pitch')).not.toContainText('—');
+  await page.locator('[data-page="lab"]').click();
   await page.locator('#tuning').fill('10');
   await page.locator('#articulation').selectOption('tu');
   await page.waitForTimeout(2200);
@@ -65,6 +69,7 @@ test('tuning and tongue style stay live through MIDI note changes and settling',
   await expect(page.locator('#tuning')).toHaveValue('10');
   await expect(page.locator('#articulation')).toHaveValue('tu');
   await expect.poll(async () => Math.abs(parseFloat(await page.locator('#oral-pressure').innerText()))).toBeGreaterThan(0.1);
+  await page.locator('[data-page="music"]').click();
   await page.locator('#score-stop').click();
   await expect(page.locator('#play')).toHaveAttribute('aria-pressed', 'false');
   await expect(page.locator('#audio-message')).not.toHaveClass(/error/);

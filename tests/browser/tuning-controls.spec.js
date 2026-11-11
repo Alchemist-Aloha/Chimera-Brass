@@ -68,10 +68,11 @@ test('setup playback, measured feedback and individual restore keep manual breat
 });
 
 test('live MIDI updates do not overwrite an in-progress edit and tuning stays live', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/#music');
   await expect(page.locator('#score-play')).toBeEnabled();
   await page.locator('#score-play').click();
   await expect(page.locator('#setup-play')).toHaveAttribute('aria-pressed', 'true');
+  await page.locator('[data-page="lab"]').click();
   const editor = page.locator('#pressure-number');
   await editor.fill('6.2');
   await page.waitForTimeout(1100);

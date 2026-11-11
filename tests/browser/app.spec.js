@@ -134,7 +134,7 @@ test('mobile layout fits the viewport with usable controls', async ({ page }) =>
 test('MIDI demo drives physical notes, score progress and pistons, then stops safely', async ({ page }) => {
   const errors = [];
   page.on('pageerror', e => errors.push(e.message));
-  await page.goto('/');
+  await page.goto('/#music');
   await expect(page.locator('#score-timeline .score-note')).toHaveCount(30);
   await expect(page.locator('#score-description')).toContainText('Five semitones lower');
   await expect(page.locator('#score-source')).toHaveAttribute('href', 'https://www.mutopiaproject.org/ftp/BeethovenLv/ode/ode-a4.pdf');
@@ -151,7 +151,7 @@ test('MIDI demo drives physical notes, score progress and pistons, then stops sa
 
 test('William Tell loads its sourced melody excerpt and plays the actual worklet', async ({ page }) => {
   const errors = []; page.on('pageerror', error => errors.push(error.message));
-  await page.goto('/');
+  await page.goto('/#music');
   await page.locator('#music-piece').selectOption('william-tell');
   await expect(page.locator('#score-timeline .score-note')).toHaveCount(39);
   await expect(page.locator('#score-description')).toContainText('71 BPM');
@@ -172,7 +172,7 @@ test('William Tell loads its sourced melody excerpt and plays the actual worklet
 });
 
 test('written note audition sounds at the transposed concert pitch', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/#music');
   await page.locator('[data-note="70"]').click();
   await expect(page.locator('[data-note="70"]')).toHaveAttribute('aria-pressed', 'true');
   await expect(page.locator('#pitch')).toContainText('B♭4', { timeout: 1500 });
@@ -183,7 +183,7 @@ test('written note audition sounds at the transposed concert pitch', async ({ pa
 });
 
 test('MIDI import validates files and can load a selected monophonic track', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/#music');
   await page.locator('#midi-file').setInputFiles({ name: 'broken.mid', mimeType: 'audio/midi', buffer: Buffer.from([1,2,3]) });
   await expect(page.locator('#music-message')).toContainText('Standard MIDI');
   await expect(page.locator('#score-play')).toBeDisabled();
