@@ -9,20 +9,20 @@ const demos = {
 };
 
 export const musicMarkup = `
-<section class="music-panel" aria-labelledby="music-title">
-  <div class="music-heading"><div><span class="eyebrow">THE PHYSICAL INSTRUMENT, PLAYED</span><h3 id="music-title">Give the air a melody.</h3></div><span class="music-range">31 NOTES · F♯3–C6 WRITTEN</span></div>
+<section class="music-panel" id="music" aria-labelledby="music-title">
+  <div class="music-heading"><h2 id="music-title">Play a melody</h2><span class="music-range">31 notes · F♯3–C6 written</span></div>
   <p class="music-help">Tap a written note to audition it. Sounding pitch is two semitones lower. Each note uses a calibrated embouchure, not a pitched oscillator. Low notes need time to speak; auditions hold for 3.5 seconds.</p>
   <div class="note-keyboard" aria-label="Playable written trumpet notes">${Array.from({ length: MAX_NOTE - MIN_NOTE + 1 }, (_, i) => {
     const midi = MIN_NOTE + i;
     return `<button data-note="${midi}" aria-pressed="false" aria-label="Play written ${noteName(midi + 2)}, concert ${noteName(midi)}"><strong>${noteName(midi + 2)}</strong><small>${fingering(midi).map((v, n) => v ? n + 1 : '').join('') || 'open'}</small></button>`;
   }).join('')}</div>
-  <div class="score-tools"><label class="sr-only" for="music-piece">Demo MIDI score</label><select id="music-piece">${Object.entries(demos).map(([id, demo]) => `<option value="${id}">${demo.title}</option>`).join('')}</select><button id="score-play" class="score-play" disabled>▶ Play score</button><button id="score-stop">■ Stop</button><label class="file-upload" for="midi-file">Open MIDI<input id="midi-file" type="file" accept=".mid,.midi,audio/midi" class="sr-only"/></label></div>
+  <div class="score-tools"><label class="sr-only" for="music-piece">Demo MIDI score</label><select id="music-piece">${Object.entries(demos).map(([id, demo]) => `<option value="${id}">${demo.title}</option>`).join('')}</select><button id="score-play" class="score-play" disabled><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2l10 6-10 6z"/></svg>Play score</button><button id="score-stop"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 3h10v10H3z"/></svg>Stop</button><label class="file-upload" for="midi-file">Open MIDI<input id="midi-file" type="file" accept=".mid,.midi,audio/midi" class="sr-only"/></label></div>
   <select id="midi-track" aria-label="MIDI melody track" hidden></select>
   <div class="score-timeline" id="score-timeline" aria-label="MIDI note score"></div>
   <div class="score-progress"><progress id="score-progress" value="0" max="1" aria-label="Score playback progress"></progress><span id="score-current" aria-live="polite">Ready</span></div>
   <p id="music-message" class="music-help" role="status">Standard MIDI uses concert pitch. One melody track → one physical trumpet.</p>
   <p id="score-description" class="music-help"></p>
-  <a id="midi-download" class="score-download" href="./scores/ode-to-joy.mid" download>Download this MIDI score ↓</a>
+  <a id="midi-download" class="score-download" href="./scores/ode-to-joy.mid" download>Download this MIDI score</a>
   <p class="music-help"><a id="score-source" class="score-download" target="_blank" rel="noreferrer" hidden></a></p>
 </section>`;
 

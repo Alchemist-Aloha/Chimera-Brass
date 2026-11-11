@@ -15,7 +15,8 @@ npm run dev
 
 Open the URL printed by Vite, then **Start airflow**. Start with a low listening volume. Audio requires a user gesture and localhost or HTTPS.
 
-- Change breath pressure, lip resonance, aperture and tongue arch.
+- Change breath pressure, lip resonance, aperture and tongue arch. Drag a slider, or enter its value directly and press **Enter** (blur also applies). **Arrow keys** make small steps; **Escape** cancels an edit. Tongue arch uses percent and tract length uses centimetres; invalid values are rejected with an inline message.
+- The dark workbench keeps the starting preset, **Play setup**, measured concert pitch and **Reset** in a sticky toolbar. Sound controls sit beside the instrument on desktop and stack on smaller screens; the melody keyboard and scores span the workbench below. Each curved-arrow button restores only that parameter; **Reset** restores the whole setup and stops sound. **Tune parameters** and **Play a melody** jump to those sections while playback stays accessible.
 - Click valves, or hold **1 / 2 / 3**. **Space** starts/stops airflow outside editable controls.
 - Choose **Tu** (front tongue) or **Ku** (rear tongue). **T / K** start airflow or re-tongue the live note; **Tongue note** uses the selected style. These are brass attacks, not spoken syllables or samples.
 - **Main tuning slide** changes real tube length: pull **+** to lower pitch, push **−** to raise it. Travel is −20 to +40 mm relative to nominal, with 0.5 mm UI steps. Tune a sustained note using the measured concert note and signed **cents** relative to A4 = 440 Hz. The slide shifts resonances, not audio playback rate; large changes can require lip retuning.

@@ -33,7 +33,7 @@ test('main tuning slide changes the shared drawing and lowers actual concert pit
   await expect(page.locator('#pitch')).toContainText('B♭4', { timeout: 1500 });
   const before = parseFloat(await page.locator('#pitch').innerText());
   await page.locator('#tuning').fill('10');
-  await expect(page.locator('#tuning-value')).toHaveText('+10.0 mm');
+  await expect(page.locator('#tuning-number')).toHaveValue('10');
   await expect(page.locator('#bore-length')).toContainText('1.500');
   await expect(page.locator('[data-main-tube]').first()).not.toHaveAttribute('d', path);
   await expect(page.locator('#water-key')).toHaveAttribute('transform', 'translate(6 0)');

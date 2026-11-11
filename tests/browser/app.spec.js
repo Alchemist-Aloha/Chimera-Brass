@@ -4,8 +4,8 @@ test('real AudioWorklet starts silent, self-oscillates, plots and stops', async 
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
   await page.goto('/');
-  await expect(page.getByRole('heading', { name: 'It starts with a breath.' })).toBeVisible();
-  await expect(page.locator('#live-status')).toContainText('AT REST');
+  await expect(page.getByRole('heading', { name: 'Trumpet laboratory' })).toBeVisible();
+  await expect(page.locator('#live-status')).toContainText('At rest');
   await expect(page.locator('#pitch')).toContainText('—');
   await page.getByRole('button', { name: 'Start airflow' }).click();
   await expect(page.getByRole('button', { name: 'Stop airflow' })).toHaveAttribute('aria-pressed', 'true');
@@ -43,7 +43,7 @@ test('controls reshape anatomy, change physical path, and reset safely', async (
   const oldTongue = await page.locator('#tongue-shape').getAttribute('d');
   const oldPath = await page.locator('#tract-air').getAttribute('d');
   await page.locator('#tongue').fill('0.9');
-  await expect(page.locator('#tongue-value')).toHaveText('90%');
+  await expect(page.locator('#tongue-number')).toHaveValue('90');
   expect(await page.locator('#tract-air').getAttribute('d')).not.toBe(oldPath);
   expect(await page.locator('#tongue-shape').getAttribute('d')).not.toBe(oldTongue);
   await page.getByRole('button', { name: 'Valve 1', exact: true }).click();
@@ -56,9 +56,9 @@ test('controls reshape anatomy, change physical path, and reset safely', async (
   await expect(page.getByRole('button', { name: 'Valve 2', exact: true })).toHaveAttribute('aria-pressed', 'false');
   await page.locator('.advanced > summary').click();
   await page.locator('#tractLength').fill('0.2');
-  await expect(page.locator('#tractLength-value')).toHaveText('20.0 cm');
+  await expect(page.locator('#tractLength-number')).toHaveValue('20');
   await page.getByRole('button', { name: 'Reset' }).click();
-  await expect(page.locator('#tongue-value')).toHaveText('45%');
+  await expect(page.locator('#tongue-number')).toHaveValue('45');
   await expect(page.locator('#bore-length')).toContainText('1.480');
   await expect(page.locator('#play')).toHaveAttribute('aria-pressed', 'false');
 });
